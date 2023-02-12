@@ -1,25 +1,30 @@
-// @ts-nocheck
 import { createSlice } from '@reduxjs/toolkit';
 import { authTest } from '../actions/auth';
 
-export const initialState = {
+interface AuthState {
+  token: string | null;
+  authTestLoading: boolean;
+  authTestDone: boolean;
+  authTestError: Error | null;
+}
+
+export const initialState: AuthState = {
+  token: null,
   authTestLoading: false,
-  authTestDome: false,
+  authTestDone: false,
   authTestError: null,
-  authData: null,
-  value: 0,
 };
 
 export const authSlice = createSlice({
   name: 'auth',
   initialState,
   reducers: {
-    plus: (state) => {
-      state.value += 1;
-    },
-    minus: (state) => {
-      state.value -= 1;
-    },
+    // plus: (state) => {
+    //   state.value += 1;
+    // },
+    // minus: (state) => {
+    //   state.value -= 1;
+    // },
   },
   extraReducers: (builder) =>
     builder
@@ -32,14 +37,14 @@ export const authSlice = createSlice({
       .addCase(authTest.fulfilled, (state, action) => {
         state.authTestLoading = false;
         state.authTestDone = true;
-        state.authData = action.payload;
+        // state.authData = action.payload;
       })
-      .addCase(authTest.rejected, (state, action) => {
+      .addCase(authTest.rejected, (state, action: any) => {
         state.authTestLoading = false;
         state.authTestError = action.error.message;
       })
       .addDefaultCase((state) => state),
 });
 
-export const { plus, minus } = authSlice.actions;
+// export const { plus, minus } = authSlice.actions;
 export default authSlice;
